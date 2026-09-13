@@ -1,6 +1,6 @@
 package config
 
-import "github.com/sudzekai/web-os-api/packages/abstractions"
+import "github.com/sudzekai-web-os/abstractions"
 
 type Configuration struct {
 	settings map[string]any

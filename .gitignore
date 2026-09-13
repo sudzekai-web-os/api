@@ -30,3 +30,10 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+
+publish/*
+/api/publish/
+
+configuration.*.json
+configuration.json
+!configuration.example.json

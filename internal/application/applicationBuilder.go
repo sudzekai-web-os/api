@@ -7,11 +7,11 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/sudzekai/web-os-api/packages/abstractions"
-	"github.com/sudzekai/web-os-api/packages/executor"
-	"github.com/sudzekai/web-os-api/packages/logging"
-	"github.com/sudzekai/web-os-api/packages/modulesloader"
-	"github.com/sudzekai/web-os-api/packages/server"
+	"github.com/sudzekai-web-os/abstractions"
+	"github.com/sudzekai-web-os/executor"
+	"github.com/sudzekai-web-os/logging"
+	modulesloader "github.com/sudzekai-web-os/modules-loader"
+	"github.com/sudzekai-web-os/server"
 )
 
 type ApplicationBuilder struct {
