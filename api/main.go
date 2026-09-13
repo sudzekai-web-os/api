@@ -6,9 +6,9 @@ import (
 
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
-	"github.com/sudzekai/web-os-api/internal/application"
-	"github.com/sudzekai/web-os-api/internal/config"
-	"github.com/sudzekai/web-os-api/packages/logging"
+	"github.com/sudzekai-web-os/api/internal/application"
+	"github.com/sudzekai-web-os/api/internal/config"
+	"github.com/sudzekai-web-os/logging"
 )
 
 func main() {
