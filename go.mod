@@ -5,12 +5,12 @@ go 1.26.8
 require (
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0
-	github.com/sudzekai-web-os/abstractions v1.0.2
-	github.com/sudzekai-web-os/executor v1.0.2
-	github.com/sudzekai-web-os/logging v1.0.2
-	github.com/sudzekai-web-os/modules-loader v1.0.2
-	github.com/sudzekai-web-os/server v1.0.2
-	github.com/sudzekai-web-os/types v1.0.3
+	github.com/sudzekai-web-os/abstractions v1.0.4
+	github.com/sudzekai-web-os/executor v1.0.4
+	github.com/sudzekai-web-os/logging v1.0.4
+	github.com/sudzekai-web-os/modules-loader v1.0.4
+	github.com/sudzekai-web-os/server v1.0.4
+	github.com/sudzekai-web-os/types v1.0.4
 )
 
 require (
