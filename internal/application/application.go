@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/sudzekai-web-os/abstractions"
+	"github.com/sudzekai-web-os/api/internal/middlewares/resultfilter"
 	"github.com/sudzekai-web-os/api/internal/pluginsloader"
 )
 
@@ -21,7 +22,7 @@ func (app *application) Run() {
 	log.LogInformation("приложение запущено")
 
 	app.loadPlugins()
-
+	app.server.GetRegistry().SetResultFilter(resultfilter.GetFilterFunc(app.loggerFactory))
 	app.server.Start()
 
 	log.LogInformation("приложение остановлено")
@@ -31,6 +32,7 @@ func (app *application) loadPlugins() {
 	log := app.loggerFactory.NewLogger("app:plugins")
 
 	app.server.GetRegistry().ClearRoutes()
+
 	err := app.pluginsLoader.LoadPlugins(
 		app.configuration.GetString("plugins.rootpath"),
 	)
