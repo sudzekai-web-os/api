@@ -43,7 +43,7 @@ func (loader *PluginsLoader) Load(path string) error {
 	symbol, err := findSymbol(p)
 
 	if err != nil {
-		return fmt.Errorf("ошибка загрузки плагина:%s", err.Error())
+		return fmt.Errorf("ошибка загрузки плагина: %s", err.Error())
 	}
 
 	mod, err := symbolAsModule(symbol)
