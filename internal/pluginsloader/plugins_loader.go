@@ -11,7 +11,7 @@ import (
 )
 
 type PluginsLoader struct {
-	modules        map[string]string
+	plugins        map[string]string
 	loggingFactory abstractions.ILoggerFactory
 	executor       abstractions.IExecutor
 	registry       abstractions.IHandlersRegistry
@@ -23,15 +23,15 @@ func NewPluginsLoader(
 	executor abstractions.IExecutor,
 	registry abstractions.IHandlersRegistry) *PluginsLoader {
 	return &PluginsLoader{
-		modules:        make(map[string]string),
+		plugins:        make(map[string]string),
 		loggingFactory: loggerFactory,
 		executor:       executor,
 		registry:       registry,
-		logger:         loggerFactory.NewLogger("modules-loader"),
+		logger:         loggerFactory.NewLogger("plugins-loader"),
 	}
 }
 
-var modules map[string]string
+var plugins map[string]string
 
 func (loader *PluginsLoader) Load(path string) error {
 	p, err := plugin.Open(path)
@@ -63,15 +63,15 @@ func (loader *PluginsLoader) Load(path string) error {
 		)
 	}
 
-	modules[mod.Name()] = mod.Version()
+	plugins[mod.Name()] = mod.Version()
 
 	loader.logger.LogDebug("плагин %s загружен", mod.Name())
 
 	return nil
 }
 
-func (loader *PluginsLoader) LoadModules(rootPath string) error {
-	modules = make(map[string]string)
+func (loader *PluginsLoader) LoadPlugins(rootPath string) error {
+	plugins = make(map[string]string)
 
 	loader.logger.LogInformation("запущена загрузка плагинов...")
 
@@ -84,14 +84,14 @@ func (loader *PluginsLoader) LoadModules(rootPath string) error {
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), ".so") {
 			loader.logger.LogInformation("загрузка плагина: %s...", file.Name())
-			err = loader.Load(filepath.Join("./modules", file.Name()))
+			err = loader.Load(filepath.Join("./plugins", file.Name()))
 			if err != nil {
 				loader.logger.LogError("плагин %s пропущен из-за: %w", file.Name(), err)
 			}
 		}
 	}
 
-	loader.logger.LogInformation("загружено плагинов %d", len(modules))
+	loader.logger.LogInformation("загружено плагинов %d", len(plugins))
 
 	return nil
 }
@@ -99,7 +99,7 @@ func (loader *PluginsLoader) LoadModules(rootPath string) error {
 func (loader *PluginsLoader) GetLoadedPlugins() (result []string) {
 	result = make([]string, 0)
 
-	for name, ver := range modules {
+	for name, ver := range plugins {
 		result = append(result, fmt.Sprintf("%s v%s", name, ver))
 	}
 
@@ -117,7 +117,7 @@ func findSymbol(p *plugin.Plugin) (plugin.Symbol, error) {
 }
 
 func symbolAsModule(symbol plugin.Symbol) (abstractions.IModule, error) {
-	modulesPointer, ok := symbol.(*abstractions.IModule)
+	pluginsPointer, ok := symbol.(*abstractions.IModule)
 
 	if !ok {
 		module, ok := symbol.(abstractions.IModule)
@@ -129,5 +129,5 @@ func symbolAsModule(symbol plugin.Symbol) (abstractions.IModule, error) {
 		return module, nil
 	}
 
-	return *modulesPointer, nil
+	return *pluginsPointer, nil
 }
