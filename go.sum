@@ -38,6 +38,8 @@ github.com/sudzekai-web-os/abstractions v1.1.0 h1:ab8GXLXmiNO1nP+RWkhKGcGBxxn1GO
 github.com/sudzekai-web-os/abstractions v1.1.0/go.mod h1:jTbeMM1CVAVvMEYorgx/YNjpGlR08jg7hupHGrDfc2w=
 github.com/sudzekai-web-os/executor v1.0.4 h1:pKmfrEld6l8yrLVdzg05cxt9mEeyGQiCkhR0RIvG60s=
 github.com/sudzekai-web-os/executor v1.0.4/go.mod h1:4auc1m0xSwHsKdqVeajGU5OZW1cxu4j773wsHK7aMp0=
+github.com/sudzekai-web-os/executor v1.0.5 h1:wC/vJyFSV0+IneDTB7NoQ9rDFaQdiifOboX3FbjEFhw=
+github.com/sudzekai-web-os/executor v1.0.5/go.mod h1:4auc1m0xSwHsKdqVeajGU5OZW1cxu4j773wsHK7aMp0=
 github.com/sudzekai-web-os/logging v1.0.4 h1:yfv5UrCsuHdooF3H0GXgYgOO3FCFfsMJ3bRaUTjx3Jc=
 github.com/sudzekai-web-os/logging v1.0.4/go.mod h1:pW3NzsQ2I2NibI8ZOy6YhJIq+3LKx0u51RHBYA32Xc4=
 github.com/sudzekai-web-os/modules-loader v1.0.4 h1:0wIVCJUiRVtxWOiERKEVuYTiALrfZFivhDfm03JFvkg=
