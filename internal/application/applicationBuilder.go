@@ -8,9 +8,9 @@ import (
 	"regexp"
 
 	"github.com/sudzekai-web-os/abstractions"
+	modulesloader "github.com/sudzekai-web-os/api/internal/modulesLoader"
 	"github.com/sudzekai-web-os/executor"
 	"github.com/sudzekai-web-os/logging"
-	modulesloader "github.com/sudzekai-web-os/modules-loader"
 	"github.com/sudzekai-web-os/server"
 )
 
