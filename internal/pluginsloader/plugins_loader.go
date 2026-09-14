@@ -37,19 +37,19 @@ func (loader *PluginsLoader) Load(path string) error {
 	p, err := plugin.Open(path)
 
 	if err != nil {
-		return fmt.Errorf("ошибка загрузки плагина: %w", err)
+		return fmt.Errorf("ошибка загрузки плагина: %s", err.Error())
 	}
 
 	symbol, err := findSymbol(p)
 
 	if err != nil {
-		return fmt.Errorf("ошибка загрузки плагина: %w", err)
+		return fmt.Errorf("ошибка загрузки плагина:%s", err.Error())
 	}
 
 	mod, err := symbolAsModule(symbol)
 
 	if err != nil {
-		return fmt.Errorf("ошибка загрузки плагина: %w", err)
+		return fmt.Errorf("ошибка загрузки плагина: %s", err.Error())
 	}
 
 	if err := mod.Initialize(
@@ -57,9 +57,9 @@ func (loader *PluginsLoader) Load(path string) error {
 		loader.loggingFactory,
 		loader.executor); err != nil {
 		return fmt.Errorf(
-			"%s, %w",
+			"%s, %s",
 			mod.Name(),
-			err,
+			err.Error(),
 		)
 	}
 
@@ -86,7 +86,7 @@ func (loader *PluginsLoader) LoadPlugins(rootPath string) error {
 			loader.logger.LogInformation("загрузка плагина: %s...", file.Name())
 			err = loader.Load(filepath.Join("./plugins", file.Name()))
 			if err != nil {
-				loader.logger.LogError("плагин %s пропущен из-за: %w", file.Name(), err)
+				loader.logger.LogError("плагин %s пропущен из-за: %s", file.Name(), err.Error())
 			}
 		}
 	}
@@ -110,7 +110,7 @@ func findSymbol(p *plugin.Plugin) (plugin.Symbol, error) {
 	symbol, err := p.Lookup("Module")
 
 	if err != nil {
-		return nil, fmt.Errorf("плагин не экспортирует символ Module: %w", err)
+		return nil, fmt.Errorf("плагин не экспортирует символ Module: %s", err.Error())
 	}
 
 	return symbol, nil
