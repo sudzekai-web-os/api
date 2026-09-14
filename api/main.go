@@ -57,6 +57,7 @@ func configureConfig() {
 
 	bind("webhost.host")
 	bind("webhost.port")
+	bind("plugins.rootpath")
 }
 
 func configureFlags() {
@@ -71,6 +72,8 @@ func configureFlags() {
 
 	pflag.String("webhost-host", "0.0.0.0", "адрес HTTP-сервера")
 	pflag.Int("webhost-port", 8080, "порт HTTP-сервера")
+
+	pflag.String("plugins-rootpath", "./plugins", "путь к папке с плагинами (.so)")
 }
 
 func coonfigureBuilder(builder *application.ApplicationBuilder) {
@@ -90,6 +93,7 @@ func coonfigureBuilder(builder *application.ApplicationBuilder) {
 func exitIfErr(err error) {
 	if err != nil {
 		log := logging.NewLoggerFactory(os.Stdout).NewLogger("main")
-		log.LogCritical("%w", err)
+		log.LogCritical("%s", err.Error())
+		os.Exit(-1)
 	}
 }
