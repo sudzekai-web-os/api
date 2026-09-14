@@ -4,13 +4,14 @@ import (
 	"os"
 
 	"github.com/sudzekai-web-os/abstractions"
+	"github.com/sudzekai-web-os/api/internal/pluginsloader"
 )
 
 type application struct {
 	server        abstractions.IServer
 	loggerFactory abstractions.ILoggerFactory
 	executor      abstractions.IExecutor
-	modulesLoader abstractions.IModulesLoader
+	pluginsLoader *pluginsloader.PluginsLoader
 	configuration abstractions.IConfiguration
 }
 
@@ -30,7 +31,7 @@ func (app *application) loadModules() {
 	log := app.loggerFactory.NewLogger("app:modules")
 
 	app.server.GetRegistry().ClearRoutes()
-	err := app.modulesLoader.LoadModules()
+	err := app.pluginsLoader.LoadModules("./modules")
 
 	if err != nil {
 		log.LogCritical("ошибка загрузки модулей: %s", err.Error())
