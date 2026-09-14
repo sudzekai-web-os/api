@@ -31,7 +31,9 @@ func (app *application) loadPlugins() {
 	log := app.loggerFactory.NewLogger("app:plugins")
 
 	app.server.GetRegistry().ClearRoutes()
-	err := app.pluginsLoader.LoadPlugins("./plugins")
+	err := app.pluginsLoader.LoadPlugins(
+		app.configuration.GetString("plugins.rootpath"),
+	)
 
 	if err != nil {
 		log.LogCritical("ошибка загрузки плагинов: %s", err.Error())
