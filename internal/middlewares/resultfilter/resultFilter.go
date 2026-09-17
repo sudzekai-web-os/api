@@ -1,4 +1,4 @@
-package middlewares
+package resultfilter
 
 import (
 	"encoding/json"
@@ -9,17 +9,17 @@ import (
 	"github.com/sudzekai-web-os/types"
 )
 
-type ResultFilter struct {
+type resultFilter struct {
 	logger abstractions.ILogger
 }
 
-func NewResultFilter(loggerFactory abstractions.ILoggerFactory) *ResultFilter {
-	return &ResultFilter{
+func GetFilterFunc(loggerFactory abstractions.ILoggerFactory) types.ResultFilter {
+	return resultFilter{
 		logger: loggerFactory.NewLogger("result-filter"),
-	}
+	}.FilterFunc
 }
 
-func (rf *ResultFilter) FilterFunc(w http.ResponseWriter, r *http.Request, result types.HandlerResult) {
+func (rf resultFilter) FilterFunc(w http.ResponseWriter, r *http.Request, result types.HandlerResult) {
 	response := responses.ResponseEnvelope{}
 
 	response.IsSuccess = result.Error == nil

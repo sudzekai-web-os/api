@@ -4,13 +4,15 @@ import (
 	"os"
 
 	"github.com/sudzekai-web-os/abstractions"
+	"github.com/sudzekai-web-os/api/internal/middlewares/resultfilter"
+	"github.com/sudzekai-web-os/api/internal/pluginsloader"
 )
 
 type application struct {
 	server        abstractions.IServer
 	loggerFactory abstractions.ILoggerFactory
 	executor      abstractions.IExecutor
-	modulesLoader abstractions.IModulesLoader
+	pluginsLoader *pluginsloader.PluginsLoader
 	configuration abstractions.IConfiguration
 }
 
@@ -19,21 +21,24 @@ func (app *application) Run() {
 
 	log.LogInformation("приложение запущено")
 
-	app.loadModules()
-
+	app.loadPlugins()
+	app.server.GetRegistry().SetResultFilter(resultfilter.GetFilterFunc(app.loggerFactory))
 	app.server.Start()
 
 	log.LogInformation("приложение остановлено")
 }
 
-func (app *application) loadModules() {
-	log := app.loggerFactory.NewLogger("app:modules")
+func (app *application) loadPlugins() {
+	log := app.loggerFactory.NewLogger("app:plugins")
 
 	app.server.GetRegistry().ClearRoutes()
-	err := app.modulesLoader.LoadModules()
+
+	err := app.pluginsLoader.LoadPlugins(
+		app.configuration.GetString("plugins.rootpath"),
+	)
 
 	if err != nil {
-		log.LogCritical("ошибка загрузки модулей: %s", err.Error())
+		log.LogCritical("ошибка загрузки плагинов: %s", err.Error())
 		os.Exit(-1)
 	}
 }

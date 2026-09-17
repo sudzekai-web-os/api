@@ -2,15 +2,14 @@ package application
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
 	"regexp"
 
 	"github.com/sudzekai-web-os/abstractions"
+	"github.com/sudzekai-web-os/api/internal/pluginsloader"
 	"github.com/sudzekai-web-os/executor"
 	"github.com/sudzekai-web-os/logging"
-	modulesloader "github.com/sudzekai-web-os/modules-loader"
 	"github.com/sudzekai-web-os/server"
 )
 
@@ -71,8 +70,8 @@ func (builder *ApplicationBuilder) Build() (*application, error) {
 	// executor
 	executor := executor.NewExecutor(appLoggerFactory)
 
-	// modulesloader
-	loader := modulesloader.NewModulesLoader(
+	// pluginsloader
+	loader := pluginsloader.NewPluginsLoader(
 		appLoggerFactory,
 		executor,
 		srv.GetRegistry(),
@@ -82,7 +81,7 @@ func (builder *ApplicationBuilder) Build() (*application, error) {
 		loggerFactory: appLoggerFactory,
 		server:        srv,
 		executor:      executor,
-		modulesLoader: loader,
+		pluginsLoader: loader,
 		configuration: builder.configuration,
 	}, nil
 }
@@ -108,8 +107,4 @@ func (builder *ApplicationBuilder) configureAppLoggerFactory(loggerFactory abstr
 	loggerFactory.SetWriter(os.Stdout)
 
 	return nil
-}
-
-func errNotFound(optionName string) error {
-	return fmt.Errorf("%s не был найден в конфигурации или имеет неверный формат данных", optionName)
 }
