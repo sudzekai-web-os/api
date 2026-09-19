@@ -4,22 +4,21 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/sudzekai-web-os/abstractions"
 	"github.com/sudzekai-web-os/api/internal/objects/responses"
-	"github.com/sudzekai-web-os/types"
+	"github.com/sudzekai-web-os/core"
 )
 
 type resultFilter struct {
-	logger abstractions.ILogger
+	logger core.ILogger
 }
 
-func GetFilterFunc(loggerFactory abstractions.ILoggerFactory) types.ResultFilter {
+func GetFilterFunc(loggerFactory core.ILoggerFactory) core.ResultFilter {
 	return resultFilter{
 		logger: loggerFactory.NewLogger("result-filter"),
 	}.FilterFunc
 }
 
-func (rf resultFilter) FilterFunc(w http.ResponseWriter, r *http.Request, result types.HandlerResult) {
+func (rf resultFilter) FilterFunc(w http.ResponseWriter, r *http.Request, result core.HandlerResult) {
 	response := responses.ResponseEnvelope{}
 
 	response.IsSuccess = result.Error == nil
