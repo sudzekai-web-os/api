@@ -1,4 +1,4 @@
-package pluginsloader
+package plugins
 
 import (
 	"fmt"
@@ -7,27 +7,31 @@ import (
 	"plugin"
 	"strings"
 
-	"github.com/sudzekai-web-os/abstractions"
+	"github.com/sudzekai-web-os/core"
 )
 
 type PluginsLoader struct {
-	plugins        map[string]string
-	loggingFactory abstractions.ILoggerFactory
-	executor       abstractions.IExecutor
-	registry       abstractions.IHandlersRegistry
-	logger         abstractions.ILogger
+	plugins       map[string]string
+	loggerFactory core.ILoggerFactory
+	executor      core.IExecutor
+	registry      core.IHandlersRegistry
+	logger        core.ILogger
+	configuration core.IConfiguration
 }
 
-func NewPluginsLoader(
-	loggerFactory abstractions.ILoggerFactory,
-	executor abstractions.IExecutor,
-	registry abstractions.IHandlersRegistry) *PluginsLoader {
+func NewLoader(
+	loggerFactory core.ILoggerFactory,
+	executor core.IExecutor,
+	registry core.IHandlersRegistry,
+	configuration core.IConfiguration,
+) *PluginsLoader {
 	return &PluginsLoader{
-		plugins:        make(map[string]string),
-		loggingFactory: loggerFactory,
-		executor:       executor,
-		registry:       registry,
-		logger:         loggerFactory.NewLogger("plugins-loader"),
+		plugins:       make(map[string]string),
+		loggerFactory: loggerFactory,
+		executor:      executor,
+		registry:      registry,
+		logger:        loggerFactory.NewLogger("plugins-loader"),
+		configuration: configuration,
 	}
 }
 
@@ -52,15 +56,15 @@ func (loader *PluginsLoader) Load(path string) error {
 		return fmt.Errorf("ошибка загрузки плагина: %s", err.Error())
 	}
 
-	if err := mod.Initialize(
-		loader.registry,
-		loader.loggingFactory,
-		loader.executor); err != nil {
-		return fmt.Errorf(
-			"%s, %s",
-			mod.Name(),
-			err.Error(),
-		)
+	loader.TryAddConfiguration(mod)
+	loader.TryAddLoggerFactory(mod)
+	loader.TryAddHandlersRegistry(mod)
+	loader.TryAddExecutor(mod)
+
+	err = mod.Start()
+
+	if err != nil {
+		return fmt.Errorf("ошибка загрузки плагина: %s", err.Error())
 	}
 
 	plugins[mod.Name()] = mod.Version()
@@ -116,18 +120,58 @@ func findSymbol(p *plugin.Plugin) (plugin.Symbol, error) {
 	return symbol, nil
 }
 
-func symbolAsModule(symbol plugin.Symbol) (abstractions.IModule, error) {
-	pluginsPointer, ok := symbol.(*abstractions.IModule)
+func symbolAsModule(symbol plugin.Symbol) (IPlugin, error) {
+	pluginsPointer, ok := symbol.(*IPlugin)
 
 	if !ok {
-		module, ok := symbol.(abstractions.IModule)
+		module, ok := symbol.(IPlugin)
 
 		if !ok {
-			return nil, fmt.Errorf("плагин не экспортирует корректный тип модуля: Module должен реализовывать интерфейс abstractions.IModule")
+			return nil, fmt.Errorf("плагин не экспортирует корректный тип модуля: Module должен реализовывать интерфейс IModule")
 		}
 
 		return module, nil
 	}
 
 	return *pluginsPointer, nil
+}
+
+func (loader *PluginsLoader) TryAddLoggerFactory(module IPlugin) {
+	consumer, ok := module.(ILoggerFactoryConsumer)
+
+	if !ok {
+		return
+	}
+
+	consumer.AddLoggerFactory(loader.loggerFactory)
+}
+
+func (loader *PluginsLoader) TryAddExecutor(module IPlugin) {
+	consumer, ok := module.(IExecutorConsumer)
+
+	if !ok {
+		return
+	}
+
+	consumer.AddExecutor(loader.executor)
+}
+
+func (loader *PluginsLoader) TryAddHandlersRegistry(module IPlugin) {
+	consumer, ok := module.(IHandlersRegistryConsumer)
+
+	if !ok {
+		return
+	}
+
+	consumer.AddHandlersRegistry(loader.registry)
+}
+
+func (loader *PluginsLoader) TryAddConfiguration(module IPlugin) {
+	consumer, ok := module.(IConfigurationConsumer)
+
+	if !ok {
+		return
+	}
+
+	consumer.AddConfiguration(loader.configuration)
 }

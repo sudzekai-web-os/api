@@ -8,14 +8,17 @@
     },
     "logging": {
         "default": {
-                "loglevel": "Information"
+            "loglevel": "Information"
         },
         "system": {
-                "loglevel": "Debug"
+            "loglevel": "Debug"
         }
     },
     "webhost": {
         "host": "0.0.0.0",
         "port": 8083
+    },
+    "plugins": {
+        "rootpath": "./plugins"
     }
 }
