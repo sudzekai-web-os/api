@@ -82,10 +82,10 @@ func (hb *HostBuilder) getConfiguredLoggerFactory() core.ILoggerFactory {
 	}
 
 	if *grpcEnabled {
-		grpcEndpoint := hb.configuration.GetString(cfg.LoggingGrpcEndpoint)
+		grpcEndpoint := hb.configuration.GetString(cfg.LoggingGrpcUrl)
 
 		if grpcEndpoint == nil {
-			hb.LogConfValueNilAndExit(cfg.LoggingGrpcEndpoint)
+			hb.LogConfValueNilAndExit(cfg.LoggingGrpcUrl)
 		}
 
 		loggerFactory.AddWriter(logging.NewGrpcWriter(*grpcEndpoint))

@@ -1,11 +1,12 @@
 package cfg
 
 const (
-	LoggingConsoleEnabled = "logging:console:enabled"
-	LoggingLevel          = "logging:console:level"
+	LoggingLevel = "logging:level"
 
-	LoggingGrpcEnabled  = "logging:grpc:enabled"
-	LoggingGrpcEndpoint = "logging:grpc:endpoint"
+	LoggingConsoleEnabled = "logging:console:enabled"
+
+	LoggingGrpcEnabled = "logging:grpc:enabled"
+	LoggingGrpcUrl     = "logging:grpc:url"
 
 	LoggingFileEnabled = "logging:file:enabled"
 	LoggingFileName    = "logging:file:name"

@@ -21,15 +21,16 @@ var flags = []objects.Flag{
 	objects.NewFlag(strings.ReplaceAll(cfg.LoggingConsoleEnabled, ":", "-"), cfg.LoggingConsoleEnabled, true, "включить логирование в консоль"),
 
 	objects.NewFlag(strings.ReplaceAll(cfg.LoggingFileEnabled, ":", "-"), cfg.LoggingFileEnabled, true, "включить логирование в файл"),
-	objects.NewFlag(strings.ReplaceAll(cfg.LoggingFileName, ":", "-"), cfg.LoggingFileName, "information", "имя файла логирования"),
+	objects.NewFlag(strings.ReplaceAll(cfg.LoggingFileName, ":", "-"), cfg.LoggingFileName, "app.log", "имя файла логирования"),
 
-	objects.NewFlag(strings.ReplaceAll(cfg.LoggingGrpcEnabled, ":", "-"), cfg.LoggingGrpcEnabled, true, "включить логирование grpc"),
-	objects.NewFlag(strings.ReplaceAll(cfg.LoggingGrpcEndpoint, ":", "-"), cfg.LoggingGrpcEndpoint, "information", "адрес gRPC"),
+	objects.NewFlag(strings.ReplaceAll(cfg.LoggingGrpcEnabled, ":", "-"), cfg.LoggingGrpcEnabled, false, "включить логирование grpc"),
+	objects.NewFlag(strings.ReplaceAll(cfg.LoggingGrpcUrl, ":", "-"), cfg.LoggingGrpcUrl, "https://localhost:50051/api/log", "адрес gRPC"),
 
 	objects.NewFlag(strings.ReplaceAll(cfg.WebhostHost, ":", "-"), cfg.WebhostHost, "0.0.0.0", "адрес HTTP-сервера"),
 	objects.NewFlag(strings.ReplaceAll(cfg.WebhostPort, ":", "-"), cfg.WebhostPort, 8080, "порт HTTP-сервера"),
 
-	objects.NewFlag(strings.ReplaceAll(cfg.PluginsRootpath, ":", "-"), cfg.PluginsRootpath, "./plugins", "путь к папке с плагинами (.so)")}
+	objects.NewFlag(strings.ReplaceAll(cfg.PluginsRootpath, ":", "-"), cfg.PluginsRootpath, "./plugins", "путь к папке с плагинами (.so)"),
+}
 
 func main() {
 	cfgBuilder := configurationbuilder.New()

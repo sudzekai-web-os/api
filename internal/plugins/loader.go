@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"plugin"
+	"reflect"
 	"strings"
 
 	"github.com/sudzekai-web-os/core"
@@ -121,19 +122,33 @@ func findSymbol(p *plugin.Plugin) (plugin.Symbol, error) {
 }
 
 func symbolAsModule(symbol plugin.Symbol) (IPlugin, error) {
-	pluginsPointer, ok := symbol.(*IPlugin)
+	value := reflect.ValueOf(symbol)
 
-	if !ok {
-		module, ok := symbol.(IPlugin)
-
-		if !ok {
-			return nil, fmt.Errorf("плагин не экспортирует корректный тип модуля: Module должен реализовывать интерфейс IModule")
-		}
-
-		return module, nil
+	if !value.IsValid() {
+		return nil, fmt.Errorf(
+			"плагин не экспортирует корректный тип модуля: Module имеет недопустимое значение",
+		)
 	}
 
-	return *pluginsPointer, nil
+	if value.Kind() == reflect.Pointer {
+		if value.IsNil() {
+			return nil, fmt.Errorf(
+				"плагин не экспортирует корректный тип модуля: Module равен nil",
+			)
+		}
+
+		value = value.Elem()
+	}
+
+	module, ok := value.Interface().(IPlugin)
+
+	if !ok {
+		return nil, fmt.Errorf(
+			"плагин не экспортирует корректный тип модуля: Module должен реализовывать интерфейс IPlugin",
+		)
+	}
+
+	return module, nil
 }
 
 func (loader *PluginsLoader) TryAddLoggerFactory(module IPlugin) {
