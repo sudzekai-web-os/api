@@ -5,7 +5,7 @@ go 1.26.8
 require (
 	github.com/sudzekai-web-os/core v0.0.4
 	github.com/sudzekai-web-os/executor v1.1.0
-	github.com/sudzekai-web-os/logging v1.2.1
+	github.com/sudzekai-web-os/logging v1.2.2
 	github.com/sudzekai-web-os/server v1.1.0
 )
 

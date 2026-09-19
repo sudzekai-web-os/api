@@ -16,6 +16,8 @@ github.com/sudzekai-web-os/logging v1.2.0 h1:0xfjz44e5kxUBlDyK1DZHyhu7hTsQQYCQvB
 github.com/sudzekai-web-os/logging v1.2.0/go.mod h1:iZR/XgdAaiRwewCNaQSfeaNUlEnP5iTJyaSZ99WaUXI=
 github.com/sudzekai-web-os/logging v1.2.1 h1:M3puheDfnGxBAs+DnR/lKz1c+Rg7j86kIhXhyd0UwEc=
 github.com/sudzekai-web-os/logging v1.2.1/go.mod h1:WKN6cpAufXvCXb4pRrWwayvJ9JY2BCMkgSUirs6bMEE=
+github.com/sudzekai-web-os/logging v1.2.2 h1:S1d5E2eq0eRgrDvFiA81i6e+giTzkaeEIDx+6ue/RLk=
+github.com/sudzekai-web-os/logging v1.2.2/go.mod h1:WKN6cpAufXvCXb4pRrWwayvJ9JY2BCMkgSUirs6bMEE=
 github.com/sudzekai-web-os/server v1.0.6 h1:7kfkNJo2xsvFtAY84/ddQGNxUvbPqbSCUaw7XfcRZ+g=
 github.com/sudzekai-web-os/server v1.0.6/go.mod h1:vonIbQtiELy8VnJPyEelePQ46ertOORuWdwHUw54hh4=
 github.com/sudzekai-web-os/server v1.1.0 h1:UeIOJTXyeYerkH1C5+8awrm+j+2OHbQAYx6py9W0VCI=
